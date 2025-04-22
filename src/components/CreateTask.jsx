@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTasks } from './TaskContext';
+const BASE_URL = 'https://task-manager-backend-8y3n.onrender.com'; // Base URL for the API
 
 const CreateTask = ({ onTaskCreated }) => {
   const { fetchTasks } = useTasks();
@@ -11,7 +12,7 @@ const CreateTask = ({ onTaskCreated }) => {
     if (!title || !description || !dueDate) return alert('Please fill all fields');
 
     try {
-      const response = await fetch('http://localhost:5000/tasks', {
+      const response = await fetch(`${BASE_URL}/tasks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, dueDate }),
