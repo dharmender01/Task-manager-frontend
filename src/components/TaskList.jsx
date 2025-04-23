@@ -7,6 +7,7 @@ const TaskList = () => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskDueDate, setTaskDueDate] = useState('');
+  const [deletingTaskId, setDeletingTaskId] = useState(null); // <-- new state
 
   const handleComplete = async (id) => {
     const task = tasks.find((t) => t._id === id);
@@ -40,7 +41,14 @@ const TaskList = () => {
   };
 
   const handleDelete = async (id) => {
-    await deleteTask(id);
+    setDeletingTaskId(id); // mark this task as deleting
+
+    try {
+      await deleteTask(id);
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+      setDeletingTaskId(null); // re-enable button if failed
+    }
   };
 
   if (loading) return <div className="text-center py-4 text-gray-600">Loading tasks...</div>;
@@ -130,9 +138,14 @@ const TaskList = () => {
                   </button>
                   <button
                     onClick={() => handleDelete(task._id)}
-                    className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    disabled={deletingTaskId === task._id}
+                    className={`px-4 py-2 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-rose-500 ${
+                      deletingTaskId === task._id
+                        ? 'bg-rose-300 cursor-not-allowed'
+                        : 'bg-rose-500 hover:bg-rose-600'
+                    }`}
                   >
-                    Delete
+                    {deletingTaskId === task._id ? 'Deleting...' : 'Delete'}
                   </button>
                 </div>
               </td>

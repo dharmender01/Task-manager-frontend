@@ -62,8 +62,7 @@ import { useTasks } from './TaskContext';
 import CreateTask from './CreateTask';
 import { Dialog, Transition } from '@headlessui/react';
 
-const BASE_URL = 'https://task-manager-backend-8y3n.onrender.com';
-// const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'http://localhost:5000';
 
 const TaskImporter = () => {
   const { fetchTasks } = useTasks();
